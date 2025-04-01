@@ -146,13 +146,6 @@ export const Sidebar: FC<SidebarProps> = ({ openInitially = true, onClose }) => 
       <Box>
         <List sx={{ py: 0 }}>
           <Divider />
-          <MenuItem
-            icon={<AccountCircle />}
-            text={t('sidebar.profile')}
-            collapsed={collapsed}
-            onClick={() => console.log('Ir para Perfil')}
-          />
-          <Divider />
           <Box
             display="flex"
             p={1}

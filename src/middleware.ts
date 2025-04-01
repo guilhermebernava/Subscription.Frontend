@@ -5,15 +5,22 @@ const defaultLocale = '/us';
 
 export function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;
-
   const url = pathname.split('/')[1];
+  const token = req.cookies.get('token')?.value;
+  const isLoginPath = pathname.endsWith('/login');
+
+  if (!token && !isLoginPath) {
+    return NextResponse.redirect(new URL(`/${url}/login`, req.url));
+  }
 
   if (pathname === '/') {
     return NextResponse.next();
   }
+
   if (!supportedLocales.includes(url)) {
     return NextResponse.redirect(new URL(`${defaultLocale}`, req.url));
   }
+
 
   return NextResponse.next();
 }
