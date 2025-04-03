@@ -103,7 +103,7 @@ export default function Login() {
                     helperText={formik.touched.email && formik.errors.email}
                   />
                 </Grid2>
-                <Grid2 size={{ xl: 6, lg: 12, md: 12, sm: 12, xs: 12 }}>
+                <Grid2 size={{ xl: 12, lg: 12, md: 12, sm: 12, xs: 12 }}>
                   <TextField
                     size="small"
                     label={t('pages.login.password')}
