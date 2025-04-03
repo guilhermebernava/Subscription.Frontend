@@ -78,6 +78,9 @@ const listItemSx = (
   cursor: 'pointer',
   my: 1,
   pb: hasSubRoutes && collapsed ? 0 : 1,
+  ':hover': {
+    backgroundColor: '#0000002F'
+  },
   ...sx,
 });
 

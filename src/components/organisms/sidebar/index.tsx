@@ -11,8 +11,9 @@ import {
   Theme,
   Divider,
   Collapse,
+  Menu as MaterialMenu,
 } from '@mui/material';
-import { MenuOpen, Menu, Home, AccountCircle } from '@mui/icons-material';
+import { MenuOpen, Menu, Home, AccountCircle, Logout } from '@mui/icons-material';
 import { useTranslation } from 'react-i18next';
 import { MenuItem, ChangeTheme, ChangeLanguage } from '@/components';
 import { routes } from '@/routes';
@@ -34,6 +35,14 @@ export const Sidebar: FC<SidebarProps> = ({ openInitially = true, onClose }) => 
   const lang = `/${i18n.language}`;
   const [collapsed, setCollapsed] = useState(!openInitially);
   const [openSubMenus, setOpenSubMenus] = useState<Record<string, boolean>>({});
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const open = Boolean(anchorEl);
+  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
 
   const toggleCollapsed = useCallback(() => setCollapsed((prev) => !prev), []);
   const toggleSubMenu = useCallback(
@@ -145,6 +154,51 @@ export const Sidebar: FC<SidebarProps> = ({ openInitially = true, onClose }) => 
 
       <Box>
         <List sx={{ py: 0 }}>
+          <Divider />
+          <MenuItem
+            id="profile-menu"
+            icon={<AccountCircle />}
+            text={t('sidebar.profile')}
+            collapsed={collapsed}
+            onClick={handleClick}
+          />
+          <MaterialMenu
+            id="profile-menu"
+            anchorEl={anchorEl}
+            open={open}
+            onClose={handleClose}
+            anchorOrigin={{
+              vertical: 'bottom',
+              horizontal: 'right',
+            }}
+            transformOrigin={{
+              vertical: 'bottom',
+              horizontal: 'right',
+            }}
+            MenuListProps={{
+              'aria-labelledby': 'profile-menu',
+            }}
+            sx={{
+              '.MuiList-padding': {
+                p: 0,
+              },
+            }}
+          >
+            <MenuItem
+              text={t('sidebar.profile-menu.logout')}
+              icon={<Logout />}
+              collapsed={false}
+              onClick={() => {
+                document.cookie.split(';').forEach((c) => {
+                  document.cookie = c
+                    .replace(/^ +/, '')
+                    .replace(/=.*/, `=;expires=${new Date().toUTCString()};path=/`);
+                });
+                push(`${lang}/login`);
+              }}
+              sx={{ m: 0 }}
+            />
+          </MaterialMenu>
           <Divider />
           <Box
             display="flex"
