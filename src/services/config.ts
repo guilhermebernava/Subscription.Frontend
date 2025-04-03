@@ -8,6 +8,10 @@ const httpsAgent = new https.Agent({
 
 const api = axios.create({
   baseURL: apiConfig.apiUrl,
+  httpsAgent,
+  headers: {
+    'Content-Type': 'application/json',
+  },
 });
 
 export { api, httpsAgent };

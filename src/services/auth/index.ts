@@ -1,20 +1,23 @@
-import { api, httpsAgent } from '@/services';
+import { api } from '@/services';
 import { IAuth } from './interface';
+import { apiConfig } from '@/configs';
 
 export class AuthService {
   async login(data: IAuth) {
-    return api.post('/login', data, { httpsAgent });
+    console.log('[AuthService] Login payload:', data);
+    console.log('[AuthService] URL:', `${apiConfig.apiUrl}/login`);
+    return api.post('login', data);
   }
   createUser(data: IAuth) {
-    return api.post('/createUser', data);
+    return api.post('createUser', data);
   }
   confirmUser(data: IAuth) {
-    return api.post('/confirmSignUp', data);
+    return api.post('confirmSignUp', data);
   }
   resetPassword(data: IAuth) {
-    return api.post('/resetPassword', data);
+    return api.post('resetPassword', data);
   }
   test() {
-    return api.get('/test');
+    return api.get('test');
   }
 }

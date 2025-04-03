@@ -8,7 +8,7 @@ export async function GET(req: NextRequest) {
 
   switch (query.get('action')) {
     case 'test': {
-      const { data } = await authService.test();
+      const data = await authService.test();
       NextResponse.json({ message: 'POST request received', data });
     }
     default:
@@ -22,31 +22,33 @@ export async function POST(req: NextRequest) {
 
     switch (body.action) {
       case 'login': {
-        const { data } = await authService.login({
-          email: body.email,
-          password: body.password,
-        });
-        if (data === 'Incorrect username or password.') {
-          return NextResponse.json({ error: data }, { status: 401 });
+        try {
+          const data = await authService.login({
+            email: body.email,
+            password: body.password,
+          });
+
+          return NextResponse.json(data.data);
+        } catch (err: any) {
+          return NextResponse.json(err?.response?.data|| err.message);
         }
-        return NextResponse.json({ message: 'Login request received', data, status: 200 });
       }
       case 'createUser': {
-        const { data } = await authService.createUser({
+        const data = await authService.createUser({
           email: body.email,
           password: body.password,
         });
         return NextResponse.json({ message: 'User has been created', data, status: 201 });
       }
       case 'confirmUser': {
-        const { data } = await authService.confirmUser({
+        const data = await authService.confirmUser({
           email: body.email,
           password: body.password,
         });
         return NextResponse.json({ message: 'User has been confirmed', data, status: 200 });
       }
       case 'resetPassword': {
-        const { data } = await authService.resetPassword({
+        const data = await authService.resetPassword({
           email: body.email,
           password: body.password,
           newPassword: body.newPassword,

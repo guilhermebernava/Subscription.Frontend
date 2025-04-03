@@ -8,6 +8,8 @@ import {
   CardHeader,
   Divider,
   Grid2,
+  IconButton,
+  InputAdornment,
   TextField,
 } from '@mui/material';
 import { useTranslation } from 'react-i18next';
@@ -16,6 +18,7 @@ import * as Yup from 'yup';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { Severity, useToast } from '@/contexts';
+import { Visibility, VisibilityOff } from '@mui/icons-material';
 
 export default function Login() {
   const { t, i18n } = useTranslation();
@@ -24,6 +27,7 @@ export default function Login() {
   const lang = `/${i18n.language}`;
 
   const [loading, setLoading] = useState(false);
+  const [seePassword, setSeePassword] = useState(false);
 
   const formik = useFormik({
     initialValues: {
@@ -44,15 +48,17 @@ export default function Login() {
           },
           body: JSON.stringify({ ...values, action: 'login' }),
         });
-        
+
         const data = await res.json();
-        if (data.status !== 200) {
-          throw new Error(data.error);
+        console.log('data =>', data);
+        if (typeof data?.token !== 'string') {
+          throw new Error(data.message);
         }
 
-        document.cookie = `token=${data}; path=/; max-age=3600;`;
+        document.cookie = `token=${data.token}; user=${data.userId}; path=/; max-age=3600;`;
         push(`${lang}/`);
       } catch (err: any) {
+        console.log(err);
         defineToast({
           severity: Severity.error,
           text: t(`error.${err.message}`),
@@ -107,7 +113,7 @@ export default function Login() {
                   <TextField
                     size="small"
                     label={t('pages.login.password')}
-                    type="password"
+                    type={seePassword ? 'type' : 'password'}
                     fullWidth
                     name="password"
                     value={formik.values.password}
@@ -115,6 +121,17 @@ export default function Login() {
                     onBlur={formik.handleBlur}
                     error={formik.touched.password && Boolean(formik.errors.password)}
                     helperText={formik.touched.password && formik.errors.password}
+                    slotProps={{
+                      input: {
+                        endAdornment: (
+                          <InputAdornment position="end">
+                            <IconButton size="small" onClick={() => setSeePassword(!seePassword)}>
+                              {seePassword ? <Visibility /> : <VisibilityOff />}
+                            </IconButton>
+                          </InputAdornment>
+                        ),
+                      },
+                    }}
                   />
                 </Grid2>
                 <Box display="flex" justifyContent="space-between" width="100%">
