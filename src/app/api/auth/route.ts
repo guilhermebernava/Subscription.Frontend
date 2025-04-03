@@ -26,7 +26,9 @@ export async function POST(req: NextRequest) {
           email: body.email,
           password: body.password,
         });
-        console.log('data', data);
+        if (data === 'Incorrect username or password.') {
+          return NextResponse.json({ error: data }, { status: 401 });
+        }
         return NextResponse.json({ message: 'Login request received', data, status: 200 });
       }
       case 'createUser': {

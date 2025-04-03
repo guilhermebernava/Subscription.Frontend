@@ -15,10 +15,12 @@ import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
+import { Severity, useToast } from '@/contexts';
 
 export default function Login() {
   const { t, i18n } = useTranslation();
   const { push } = useRouter();
+  const { defineToast } = useToast();
   const lang = `/${i18n.language}`;
 
   const [loading, setLoading] = useState(false);
@@ -34,19 +36,30 @@ export default function Login() {
     }),
     onSubmit: async (values) => {
       setLoading(true);
-      await fetch('/api/auth', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ ...values, action: 'login' }),
-      })
-        .then(async (res) => {
-          const data = await res.json();
-          document.cookie = `token=${data}; path=/; max-age=3600;`;
-          push(`${lang}/`);
-        })
-        .finally(() => setLoading(false));
+      try {
+        const res = await fetch('/api/auth', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ ...values, action: 'login' }),
+        });
+        
+        const data = await res.json();
+        if (data.status !== 200) {
+          throw new Error(data.error);
+        }
+
+        document.cookie = `token=${data}; path=/; max-age=3600;`;
+        push(`${lang}/`);
+      } catch (err: any) {
+        defineToast({
+          severity: Severity.error,
+          text: t(`error.${err.message}`),
+        });
+      } finally {
+        setLoading(false);
+      }
     },
   });
 
@@ -77,7 +90,7 @@ export default function Login() {
           <CardContent>
             <form onSubmit={formik.handleSubmit}>
               <Grid2 container gap={2}>
-                <Grid2 size={{ xl: 6, lg: 12, md: 12, sm: 12, xs: 12 }}>
+                <Grid2 size={{ xl: 12, lg: 12, md: 12, sm: 12, xs: 12 }}>
                   <TextField
                     size="small"
                     label={t('pages.login.user')}
@@ -106,13 +119,17 @@ export default function Login() {
                 </Grid2>
                 <Box display="flex" justifyContent="space-between" width="100%">
                   <Grid2>
-                    <Button disabled variant="text">{t('pages.login.create-user')}</Button>
+                    <Button disabled variant="text">
+                      {t('pages.login.create-user')}
+                    </Button>
                   </Grid2>
                   <Grid2>
-                    <Button disabled variant="text">{t('pages.login.reset-password')}</Button>
+                    <Button disabled variant="text">
+                      {t('pages.login.reset-password')}
+                    </Button>
                   </Grid2>
                 </Box>
-                <Grid2 size={{ xl: 6, lg: 12, md: 12, sm: 12, xs: 12 }}>
+                <Grid2 size={{ xl: 12, lg: 12, md: 12, sm: 12, xs: 12 }}>
                   <Button
                     type="submit"
                     variant="contained"

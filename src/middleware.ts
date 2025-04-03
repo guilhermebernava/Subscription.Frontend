@@ -14,13 +14,11 @@ export function middleware(req: NextRequest) {
 
   const token = req.cookies.get('token');
   const actualLanguage = pathname.split('/')[1];
-  if (!token && !pathname.includes('login')) {
+  if (token) {
+    return NextResponse.next();
+  } else if (!token && !pathname.includes('/login')) {
     return NextResponse.redirect(new URL(`${actualLanguage}/login`, req.url));
-  } else if (token && pathname.includes('login')) {
-    return NextResponse.redirect(new URL(`${actualLanguage}/`, req.url));
   }
-
-  return NextResponse.next();
 }
 
 export const config = {
