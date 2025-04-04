@@ -84,10 +84,6 @@ export default function ConfirmUser() {
       email: '',
       password: '',
     },
-    validationSchema: Yup.object({
-      email: Yup.string().required(t('pages.confirm-user.form.user.required')),
-      password: Yup.string().required(t('pages.confirm-user.form.password.required')),
-    }),
     onSubmit: async (values) => {
       setLoading(true);
       try {
@@ -101,15 +97,19 @@ export default function ConfirmUser() {
           setLoading(false);
           return;
         }
-        await fetch('/api/auth', {
+        const res = await fetch('/api/auth', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({ ...values, confirmationCode, action: 'confirmUser' }),
         });
-
-        push(`${lang}/login`);
+        const data = await res.json();
+        if (res.ok) {
+          push(`${lang}/login`);
+        } else {
+          throw new Error(data.message || 'error.unknown');
+        }
       } catch (err: any) {
         defineToast({
           severity: Severity.error,
@@ -158,45 +158,6 @@ export default function ConfirmUser() {
           <CardContent>
             <form onSubmit={formik.handleSubmit}>
               <Grid2 container gap={2}>
-                <Grid2 size={{ xl: 12, lg: 12, md: 12, sm: 12, xs: 12 }}>
-                  <TextField
-                    size="small"
-                    label={t('pages.confirm-user.user')}
-                    fullWidth
-                    name="email"
-                    value={formik.values.email}
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                    error={formik.touched.email && Boolean(formik.errors.email)}
-                    helperText={formik.touched.email && formik.errors.email}
-                    autoFocus
-                  />
-                </Grid2>
-                <Grid2 size={{ xl: 12, lg: 12, md: 12, sm: 12, xs: 12 }}>
-                  <TextField
-                    size="small"
-                    label={t('pages.confirm-user.password')}
-                    type={seePassword ? 'text' : 'password'}
-                    fullWidth
-                    name="password"
-                    value={formik.values.password}
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                    error={formik.touched.password && Boolean(formik.errors.password)}
-                    helperText={formik.touched.password && formik.errors.password}
-                    slotProps={{
-                      input: {
-                        endAdornment: (
-                          <InputAdornment position="end">
-                            <IconButton size="small" onClick={() => setSeePassword(!seePassword)}>
-                              {seePassword ? <Visibility /> : <VisibilityOff />}
-                            </IconButton>
-                          </InputAdornment>
-                        ),
-                      },
-                    }}
-                  />
-                </Grid2>
                 <Grid2 size={{ xl: 12, lg: 12, md: 12, sm: 12, xs: 12 }}>
                   <InputLabel>{t('pages.confirm-user.confirmation-code')}</InputLabel>
                   <Box display="flex" justifyContent="space-between" gap={1}>

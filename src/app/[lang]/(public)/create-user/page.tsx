@@ -55,13 +55,17 @@ export default function CreateUser() {
         });
 
         const data = await res.json();
-        defineToast({
-          severity: Severity.success,
-          text: t('pages.create-user.success'),
-        });
-        setTimeout(() => {
-          push(`${lang}/login`);
-        }, 3000);
+        if (res.ok) {
+          defineToast({
+            severity: Severity.success,
+            text: t('pages.create-user.success'),
+          });
+          setTimeout(() => {
+            push(`${lang}/login`);
+          }, 3000);
+        } else {
+          throw new Error(data.message || 'error.unknown');
+        }
       } catch (err: any) {
         defineToast({
           severity: Severity.error,

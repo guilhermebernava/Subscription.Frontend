@@ -46,13 +46,20 @@ export default function ResetPassword() {
     onSubmit: async (values) => {
       setLoading(true);
       try {
-        await fetch('/api/auth', {
+        const res = await fetch('/api/auth', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({ ...values, action: 'resetPassword' }),
         });
+
+        const data = await res.json();
+        if (res.ok) {
+          push(`${lang}/login`);
+        } else {
+          throw new Error(data.message || 'error.unknown');
+        }
 
         push(`${lang}/`);
       } catch (err: any) {

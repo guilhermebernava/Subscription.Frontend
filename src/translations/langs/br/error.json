@@ -1,3 +1,5 @@
 {
-  "Incorrect username or password.": "Usuário ou senha incorreta."
+  "Incorrect username or password.": "Usuário ou senha incorreta.",
+  "Exceed max confirmation code attempts. Please resend confirmation code and retry.": "Excedeu o número máximo de tentativas de confirmação. Por favor, solicite novamente o código de confirmação e tente novamente.",
+  "Attempt limit exceeded, please try after some time.": "Limite de tentativas excedido, por favor, tente novamente mais tarde."
 }

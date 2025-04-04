@@ -52,12 +52,12 @@ export default function Login() {
         });
 
         const data = await res.json();
-        if (typeof data?.token !== 'string') {
-          throw new Error(data.message);
+        if (res.ok) {
+          document.cookie = `token=${data.token}; user=${data.userId}; path=/; max-age=3600;`;
+          push(`${lang}/`);
+        } else {
+          throw new Error(data.message || 'error.unknown');
         }
-
-        document.cookie = `token=${data.token}; user=${data.userId}; path=/; max-age=3600;`;
-        push(`${lang}/`);
       } catch (err: any) {
         if (err.message === 'User is not confirmed.') {
           defineToast({

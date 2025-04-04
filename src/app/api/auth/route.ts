@@ -9,10 +9,10 @@ export async function GET(req: NextRequest) {
   switch (query.get('action')) {
     case 'test': {
       const data = await authService.test();
-      NextResponse.json({ message: 'POST request received', data });
+      return NextResponse.json({ success: data.success, ...data.data }, { status: data.status });
     }
     default:
-      return NextResponse.json({ error: 'Action not found' }, { status: 404 });
+      return NextResponse.json({ success: false, error: 'Action not found' }, { status: 404 });
   }
 }
 
@@ -28,9 +28,9 @@ export async function POST(req: NextRequest) {
             password: body.password,
           });
 
-          return NextResponse.json(data.data);
+          return NextResponse.json({ success: data.success, ...data.data }, { status: data.status });
         } catch (err: any) {
-          return NextResponse.json(err?.response?.data || err.message);
+          return NextResponse.json({ success: false, error: err?.response?.data || err.message });
         }
       }
       case 'createUser': {
@@ -39,9 +39,9 @@ export async function POST(req: NextRequest) {
             email: body.email,
             password: body.password,
           });
-          return NextResponse.json(data.data);
+          return NextResponse.json({ success: data.success, ...data.data }, { status: data.status });
         } catch (err: any) {
-          return NextResponse.json(err?.response?.data || err.message);
+          return NextResponse.json({ success: false, error: err?.response?.data || err.message });
         }
       }
       case 'confirmUser': {
@@ -51,9 +51,10 @@ export async function POST(req: NextRequest) {
             password: body.password,
             confirmationCode: body.confirmationCode,
           });
-          return NextResponse.json(data.data);
+
+          return NextResponse.json({ success: true, ...data.data }, { status: data.status });
         } catch (err: any) {
-          return NextResponse.json(err?.response?.data || err.message);
+          return NextResponse.json({ success: false, error: err?.response?.data || err.message });
         }
       }
       case 'resetPassword': {
@@ -63,17 +64,17 @@ export async function POST(req: NextRequest) {
             oldPassword: body.oldPassword,
             newPassword: body.newPassword,
           });
-          return NextResponse.json(data.data);
+          return NextResponse.json({ success: data.success, ...data.data }, { status: data.status });
         } catch (err: any) {
-          return NextResponse.json(err?.response?.data || err.message);
+          return NextResponse.json({ success: false, error: err?.response?.data || err.message });
         }
       }
       default: {
-        return NextResponse.json({ error: 'Action not found' }, { status: 404 });
+        return NextResponse.json({ success: false, error: 'Action not found' }, { status: 404 });
       }
     }
   } catch (error) {
     console.error('Error parsing JSON body:', error);
-    return NextResponse.json({ error: 'Invalid JSON body' }, { status: 400 });
+    return NextResponse.json({ success: false, error: 'Invalid JSON body' }, { status: 400 });
   }
 }

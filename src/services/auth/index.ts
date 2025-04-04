@@ -4,18 +4,87 @@ import { apiConfig } from '@/configs';
 
 export class AuthService {
   async login(data: IAuth) {
-    return api.post('login', data);
+    try {
+      const response = await api.post('login', data);
+      return {
+        success: true,
+        data: response.data,
+        status: response.status,
+      };
+    } catch (error: any) {
+      return {
+        success: false,
+        data: error?.response?.data || error.message,
+        status: error?.response?.status || 400,
+      };
+    }
   }
-  createUser(data: IAuth) {
-    return api.post('createUser', data);
+  
+  async createUser(data: IAuth) {
+    try {
+      const response = await api.post('createUser', data);
+      return {
+        success: true,
+        data: response.data,
+        status: response.status,
+      };
+    } catch (error: any) {
+      return {
+        success: false,
+        data: error?.response?.data || error.message,
+        status: error?.response?.status || 400,
+      };
+    }
   }
-  confirmUser(data: IAuth) {
-    return api.post('confirmSignUp', data);
+  
+  async confirmUser(data: IAuth) {
+    try {
+      const response = await api.post('confirmSignUp', data);
+      return {
+        success: true,
+        data: response.data,
+        status: response.status,
+      };
+    } catch (error: any) {
+      return {
+        success: false,
+        data: error?.response?.data || error.message,
+        status: error?.response?.status || 400,
+      };
+    }
   }
-  resetPassword(data: IAuth) {
-    return api.post('resetPassword', data);
+  
+  async resetPassword(data: IAuth) {
+    try {
+      const response = await api.post('resetPassword', data);
+      return {
+        success: true,
+        data: response.data,
+        status: response.status,
+      };
+    } catch (error: any) {
+      return {
+        success: false,
+        data: error?.response?.data || error.message,
+        status: error?.response?.status || 400,
+      };
+    }
   }
-  test() {
-    return api.get('test');
+  
+  async test() {
+    try {
+      const response = await api.get('test');
+      return {
+        success: true,
+        data: response.data,
+        status: response.status,
+      };
+    } catch (error: any) {
+      return {
+        success: false,
+        data: error?.response?.data || error.message,
+        status: error?.response?.status || 400,
+      };
+    }
   }
 }
