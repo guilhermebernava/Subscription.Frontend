@@ -17,13 +17,15 @@ import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
-import { Severity, useToast } from '@/contexts';
+import { Severity, useNonPersistentData, useToast } from '@/contexts';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 
 export default function Login() {
   const { t, i18n } = useTranslation();
   const { push } = useRouter();
   const { defineToast } = useToast();
+  const { increaseData } = useNonPersistentData();
+
   const lang = `/${i18n.language}`;
 
   const [loading, setLoading] = useState(false);
@@ -61,6 +63,10 @@ export default function Login() {
           defineToast({
             severity: Severity.info,
             text: t(`pages.login.user-not-confirmed`),
+          });
+          increaseData({
+            data: [JSON.stringify(values)],
+            parent: 'login',
           });
           push(`${lang}/confirm-user`);
           return;

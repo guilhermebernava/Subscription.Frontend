@@ -17,14 +17,16 @@ import { useTranslation } from 'react-i18next';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
-import { Severity, useToast } from '@/contexts';
+import { use, useEffect, useState } from 'react';
+import { Severity, useNonPersistentData, useToast } from '@/contexts';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 
 export default function ConfirmUser() {
   const { t, i18n } = useTranslation();
   const { push } = useRouter();
   const { defineToast } = useToast();
+  const { foundData, removeData } = useNonPersistentData();
+
   const lang = `/${i18n.language}`;
 
   const [loading, setLoading] = useState(false);
@@ -54,8 +56,8 @@ export default function ConfirmUser() {
 
   const handlePasteCode = (e: React.ClipboardEvent<HTMLInputElement>) => {
     const pastedData = e.clipboardData.getData('Text');
-    if (!/^\d{6}$/.test(pastedData)) return;
-    const digits = pastedData.split('');
+    const digits = pastedData.replace(/\D/g, '').slice(0, 6).split('');
+    if (digits.length !== 6) return;
     setConfirmationDigits(digits);
     setTimeout(() => {
       const lastInput = document.querySelector(`input[name=code-5]`);
@@ -119,6 +121,16 @@ export default function ConfirmUser() {
     },
   });
 
+  useEffect(() => {
+    const data = foundData('login');
+    if (!data) return;
+
+    const user = JSON.parse(data);
+    formik.setFieldValue('email', user.email);
+    formik.setFieldValue('password', user.password);
+    removeData('login');
+  }, [foundData, removeData]);
+
   return (
     <main style={{ minHeight: '100dvh' }}>
       <Box
@@ -157,6 +169,7 @@ export default function ConfirmUser() {
                     onBlur={formik.handleBlur}
                     error={formik.touched.email && Boolean(formik.errors.email)}
                     helperText={formik.touched.email && formik.errors.email}
+                    autoFocus
                   />
                 </Grid2>
                 <Grid2 size={{ xl: 12, lg: 12, md: 12, sm: 12, xs: 12 }}>
