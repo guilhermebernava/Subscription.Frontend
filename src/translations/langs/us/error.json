@@ -1,0 +1,5 @@
+{
+  "Incorrect username or password.": "Incorrect username or password.",
+  "Exceed max confirmation code attempts. Please resend confirmation code and retry.": "Exceed max confirmation code attempts. Please resend confirmation code and retry.",
+  "Attempt limit exceeded, please try after some time.": "Attempt limit exceeded, please try after some time."
+}

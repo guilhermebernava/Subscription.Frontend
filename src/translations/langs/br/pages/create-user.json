@@ -1,0 +1,27 @@
+{
+  "title": "Criar usuário",
+  "user": "Usuário",
+  "password": "Senha",
+  "confirm-password": "Confirme a senha",
+  "signUp": "Criar",
+  "back-to-login": "Voltar para o login",
+  "success": "Usuário criado com sucesso! você será redirecionado para a página de login em 3 segundos.",
+  "form": {
+    "user": {
+      "required": "O campo usuário é obrigatório!",
+      "maxLength": "O campo usuário deve ter no mínimo 3 caracteres",
+      "minLength": "O campo usuário deve ter no máximo 20 caracteres"
+    },
+    "password": {
+      "required": "O campo senha é obrigatório!",
+      "maxLength": "O campo senha deve ter no mínimo 6 caracteres",
+      "minLength": "O campo senha deve ter no máximo 20 caracteres"
+    },
+    "confirm-password": {
+      "required": "O campo senha é obrigatório!",
+      "maxLength": "O campo senha deve ter no mínimo 6 caracteres",
+      "minLength": "O campo senha deve ter no máximo 20 caracteres",
+      "match": "As senhas não conferem"
+    }
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "title": "Confirm user",
+  "user": "User",
+  "password": "Password",
+  "confirm": "Confirm user",
+  "confirmation-code": "Confirmation code",
+  "form": {
+    "user": {
+      "required": "User is required"
+    },
+    "password": {
+      "required": "Password is required"
+    },
+    "confirmation-code": {
+      "required": "Confirmation code is required"
+    }
+  }
+}

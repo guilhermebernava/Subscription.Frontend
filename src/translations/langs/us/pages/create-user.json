@@ -1,0 +1,27 @@
+{
+  "title": "Create User",
+  "user": "User",
+  "password": "Password",
+  "confirm-password": "Confirm password",
+  "signUp": "Sign Up",
+  "back-to-login": "Back to login",
+  "success": "User created successfully! You will be redirected to login page in 3 seconds.",
+  "form": {
+    "user": {
+      "required": "User is required!",
+      "minLength": "User must be at least 3 characters",
+      "maxLength": "User must be at most 20 characters"
+    },
+    "password": {
+      "required": "Password is required!",
+      "minLength": "Password must be at least 6 characters",
+      "maxLength": "Password must be at most 20 characters"
+    },
+    "confirm-password": {
+      "required": "Password is required!",
+      "minLength": "Password must be at least 6 characters",
+      "maxLength": "Password must be at most 20 characters",
+      "match": "Passwords must match"
+    }
+  }
+}

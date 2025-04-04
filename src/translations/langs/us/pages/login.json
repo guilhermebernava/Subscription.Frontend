@@ -1,0 +1,21 @@
+{
+  "title": "Login",
+  "user": "User",
+  "password": "Password",
+  "signIn": "Login",
+  "create-user": "Sign Up",
+  "reset-password": "Reset password",
+  "user-not-confirmed": "User not confirmed yet.",
+  "form": {
+    "user": {
+      "required": "User is required!",
+      "minLength": "User must be at least 3 characters",
+      "maxLength": "User must be at most 20 characters"
+    },
+    "password": {
+      "required": "Password is required!",
+      "minLength": "Password must be at least 6 characters",
+      "maxLength": "Password must be at most 20 characters"
+    }
+  }
+}

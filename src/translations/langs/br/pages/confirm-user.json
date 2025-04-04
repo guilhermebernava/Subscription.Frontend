@@ -1,0 +1,18 @@
+{
+  "title": "Confirmar usuário",
+  "user": "Usuário",
+  "password": "Senha",
+  "confirm": "Confirmar usuário",
+  "confirmation-code": "Código de confirmação",
+  "form": {
+    "user": {
+      "required": "O campo usuário é obrigatório!"
+    },
+    "password": {
+      "required": "O campo senha é obrigatório!"
+    },
+    "confirmation-code": {
+      "required": "O campo código de confirmação é obrigatório!"
+    }
+  }
+}
