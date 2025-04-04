@@ -5,6 +5,7 @@
   "signIn": "Login",
   "create-user": "Sign Up",
   "reset-password": "Reset password",
+  "user-not-confirmed": "User not confirmed yet.",
   "form": {
     "user": {
       "required": "User is required!",

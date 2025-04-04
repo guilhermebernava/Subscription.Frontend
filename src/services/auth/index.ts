@@ -4,8 +4,6 @@ import { apiConfig } from '@/configs';
 
 export class AuthService {
   async login(data: IAuth) {
-    console.log('[AuthService] Login payload:', data);
-    console.log('[AuthService] URL:', `${apiConfig.apiUrl}/login`);
     return api.post('login', data);
   }
   createUser(data: IAuth) {

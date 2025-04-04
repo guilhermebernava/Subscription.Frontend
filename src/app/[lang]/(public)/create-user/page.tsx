@@ -20,7 +20,7 @@ import { useState } from 'react';
 import { Severity, useToast } from '@/contexts';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 
-export default function Login() {
+export default function CreateUser() {
   const { t, i18n } = useTranslation();
   const { push } = useRouter();
   const { defineToast } = useToast();
@@ -28,15 +28,20 @@ export default function Login() {
 
   const [loading, setLoading] = useState(false);
   const [seePassword, setSeePassword] = useState(false);
+  const [seeConfirmPassword, setSeeConfirmPassword] = useState(false);
 
   const formik = useFormik({
     initialValues: {
       email: '',
       password: '',
+      confirmPassword: '',
     },
     validationSchema: Yup.object({
-      email: Yup.string().required(t('pages.login.form.user.required')),
-      password: Yup.string().required(t('pages.login.form.password.required')),
+      email: Yup.string().required(t('pages.create-user.form.user.required')),
+      password: Yup.string().required(t('pages.create-user.form.password.required')),
+      confirmPassword: Yup.string()
+        .required(t('pages.create-user.form.confirm-password.required'))
+        .oneOf([Yup.ref('password')], t('pages.create-user.form.confirm-password.match')),
     }),
     onSubmit: async (values) => {
       setLoading(true);
@@ -46,25 +51,18 @@ export default function Login() {
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({ ...values, action: 'login' }),
+          body: JSON.stringify({ ...values, action: 'createUser' }),
         });
 
         const data = await res.json();
-        if (typeof data?.token !== 'string') {
-          throw new Error(data.message);
-        }
-
-        document.cookie = `token=${data.token}; user=${data.userId}; path=/; max-age=3600;`;
-        push(`${lang}/`);
+        defineToast({
+          severity: Severity.success,
+          text: t('pages.create-user.success'),
+        });
+        setTimeout(() => {
+          push(`${lang}/login`);
+        }, 3000);
       } catch (err: any) {
-        if (err.message === 'User is not confirmed.') {
-          defineToast({
-            severity: Severity.info,
-            text: t(`pages.login.user-not-confirmed`),
-          });
-          push(`${lang}/confirm-user`);
-          return;
-        }
         defineToast({
           severity: Severity.error,
           text: t(`error.${err.message}`),
@@ -95,7 +93,7 @@ export default function Login() {
           }}
         >
           <Box display="flex" justifyContent="space-between" pr={2}>
-            <CardHeader title={t('pages.login.title')} />
+            <CardHeader title={t('pages.create-user.title')} />
             <ChangeLanguage />
           </Box>
           <Divider />
@@ -105,7 +103,7 @@ export default function Login() {
                 <Grid2 size={{ xl: 12, lg: 12, md: 12, sm: 12, xs: 12 }}>
                   <TextField
                     size="small"
-                    label={t('pages.login.user')}
+                    label={t('pages.create-user.user')}
                     fullWidth
                     name="email"
                     value={formik.values.email}
@@ -118,7 +116,7 @@ export default function Login() {
                 <Grid2 size={{ xl: 12, lg: 12, md: 12, sm: 12, xs: 12 }}>
                   <TextField
                     size="small"
-                    label={t('pages.login.password')}
+                    label={t('pages.create-user.password')}
                     type={seePassword ? 'text' : 'password'}
                     fullWidth
                     name="password"
@@ -140,27 +138,48 @@ export default function Login() {
                     }}
                   />
                 </Grid2>
-                <Box display="flex" justifyContent="space-between" width="100%">
-                  <Grid2>
-                    <Button variant="text" href={`${lang}/create-user`} disabled={loading}>
-                      {t('pages.login.create-user')}
-                    </Button>
-                  </Grid2>
-                  <Grid2>
-                    <Button variant="text" href={`${lang}/reset-password`} disabled={loading}>
-                      {t('pages.login.reset-password')}
-                    </Button>
-                  </Grid2>
-                </Box>
+                <Grid2 size={{ xl: 12, lg: 12, md: 12, sm: 12, xs: 12 }}>
+                  <TextField
+                    size="small"
+                    label={t('pages.create-user.confirm-password')}
+                    type={seeConfirmPassword ? 'text' : 'password'}
+                    fullWidth
+                    name="confirmPassword"
+                    value={formik.values.confirmPassword}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    error={formik.touched.confirmPassword && Boolean(formik.errors.confirmPassword)}
+                    helperText={formik.touched.confirmPassword && formik.errors.confirmPassword}
+                    slotProps={{
+                      input: {
+                        endAdornment: (
+                          <InputAdornment position="end">
+                            <IconButton
+                              size="small"
+                              onClick={() => setSeeConfirmPassword(!seeConfirmPassword)}
+                            >
+                              {seeConfirmPassword ? <Visibility /> : <VisibilityOff />}
+                            </IconButton>
+                          </InputAdornment>
+                        ),
+                      },
+                    }}
+                  />
+                </Grid2>
                 <Grid2 size={{ xl: 12, lg: 12, md: 12, sm: 12, xs: 12 }}>
                   <Button
                     type="submit"
                     variant="contained"
                     fullWidth
                     disableElevation
-                    disabled={loading}
+                    disabled={loading || Object.values(formik.errors).some((error: any) => error)}
                   >
-                    {t('pages.login.signIn')}
+                    {t('pages.create-user.signUp')}
+                  </Button>
+                </Grid2>
+                <Grid2 size={{ xl: 12, lg: 12, md: 12, sm: 12, xs: 12 }}>
+                  <Button href={`${lang}/login`} fullWidth disableElevation disabled={loading}>
+                    {t('pages.create-user.back-to-login')}
                   </Button>
                 </Grid2>
               </Grid2>

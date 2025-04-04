@@ -20,51 +20,42 @@ import { useState } from 'react';
 import { Severity, useToast } from '@/contexts';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 
-export default function Login() {
+export default function ResetPassword() {
   const { t, i18n } = useTranslation();
   const { push } = useRouter();
   const { defineToast } = useToast();
   const lang = `/${i18n.language}`;
 
   const [loading, setLoading] = useState(false);
-  const [seePassword, setSeePassword] = useState(false);
+  const [seeOldPassword, setSeeOldPassword] = useState(false);
+  const [seeNewPassword, setSeeNewPassword] = useState(false);
 
   const formik = useFormik({
     initialValues: {
       email: '',
-      password: '',
+      oldPassword: '',
+      newPassword: '',
     },
     validationSchema: Yup.object({
-      email: Yup.string().required(t('pages.login.form.user.required')),
-      password: Yup.string().required(t('pages.login.form.password.required')),
+      email: Yup.string().required(t('pages.reset-password.form.user.required')),
+      oldPassword: Yup.string().required(t('pages.reset-password.form.old-password.required')),
+      newPassword: Yup.string()
+        .required(t('pages.reset-password.form.new-password.required'))
+        .notOneOf([Yup.ref('oldPassword')], t('pages.reset-password.form.new-password.different')),
     }),
     onSubmit: async (values) => {
       setLoading(true);
       try {
-        const res = await fetch('/api/auth', {
+        await fetch('/api/auth', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({ ...values, action: 'login' }),
+          body: JSON.stringify({ ...values, action: 'resetPassword' }),
         });
 
-        const data = await res.json();
-        if (typeof data?.token !== 'string') {
-          throw new Error(data.message);
-        }
-
-        document.cookie = `token=${data.token}; user=${data.userId}; path=/; max-age=3600;`;
         push(`${lang}/`);
       } catch (err: any) {
-        if (err.message === 'User is not confirmed.') {
-          defineToast({
-            severity: Severity.info,
-            text: t(`pages.login.user-not-confirmed`),
-          });
-          push(`${lang}/confirm-user`);
-          return;
-        }
         defineToast({
           severity: Severity.error,
           text: t(`error.${err.message}`),
@@ -95,7 +86,7 @@ export default function Login() {
           }}
         >
           <Box display="flex" justifyContent="space-between" pr={2}>
-            <CardHeader title={t('pages.login.title')} />
+            <CardHeader title={t('pages.reset-password.title')} />
             <ChangeLanguage />
           </Box>
           <Divider />
@@ -105,7 +96,7 @@ export default function Login() {
                 <Grid2 size={{ xl: 12, lg: 12, md: 12, sm: 12, xs: 12 }}>
                   <TextField
                     size="small"
-                    label={t('pages.login.user')}
+                    label={t('pages.reset-password.user')}
                     fullWidth
                     name="email"
                     value={formik.values.email}
@@ -118,21 +109,24 @@ export default function Login() {
                 <Grid2 size={{ xl: 12, lg: 12, md: 12, sm: 12, xs: 12 }}>
                   <TextField
                     size="small"
-                    label={t('pages.login.password')}
-                    type={seePassword ? 'text' : 'password'}
+                    label={t('pages.reset-password.old-password')}
+                    type={seeOldPassword ? 'text' : 'password'}
                     fullWidth
-                    name="password"
-                    value={formik.values.password}
+                    name="oldPassword"
+                    value={formik.values.oldPassword}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
-                    error={formik.touched.password && Boolean(formik.errors.password)}
-                    helperText={formik.touched.password && formik.errors.password}
+                    error={formik.touched.oldPassword && Boolean(formik.errors.oldPassword)}
+                    helperText={formik.touched.oldPassword && formik.errors.oldPassword}
                     slotProps={{
                       input: {
                         endAdornment: (
                           <InputAdornment position="end">
-                            <IconButton size="small" onClick={() => setSeePassword(!seePassword)}>
-                              {seePassword ? <Visibility /> : <VisibilityOff />}
+                            <IconButton
+                              size="small"
+                              onClick={() => setSeeOldPassword(!seeOldPassword)}
+                            >
+                              {seeOldPassword ? <Visibility /> : <VisibilityOff />}
                             </IconButton>
                           </InputAdornment>
                         ),
@@ -140,27 +134,48 @@ export default function Login() {
                     }}
                   />
                 </Grid2>
-                <Box display="flex" justifyContent="space-between" width="100%">
-                  <Grid2>
-                    <Button variant="text" href={`${lang}/create-user`} disabled={loading}>
-                      {t('pages.login.create-user')}
-                    </Button>
-                  </Grid2>
-                  <Grid2>
-                    <Button variant="text" href={`${lang}/reset-password`} disabled={loading}>
-                      {t('pages.login.reset-password')}
-                    </Button>
-                  </Grid2>
-                </Box>
+                <Grid2 size={{ xl: 12, lg: 12, md: 12, sm: 12, xs: 12 }}>
+                  <TextField
+                    size="small"
+                    label={t('pages.reset-password.new-password')}
+                    type={seeNewPassword ? 'text' : 'password'}
+                    fullWidth
+                    name="newPassword"
+                    value={formik.values.newPassword}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    error={formik.touched.newPassword && Boolean(formik.errors.newPassword)}
+                    helperText={formik.touched.newPassword && formik.errors.newPassword}
+                    slotProps={{
+                      input: {
+                        endAdornment: (
+                          <InputAdornment position="end">
+                            <IconButton
+                              size="small"
+                              onClick={() => setSeeNewPassword(!seeNewPassword)}
+                            >
+                              {seeNewPassword ? <Visibility /> : <VisibilityOff />}
+                            </IconButton>
+                          </InputAdornment>
+                        ),
+                      },
+                    }}
+                  />
+                </Grid2>
                 <Grid2 size={{ xl: 12, lg: 12, md: 12, sm: 12, xs: 12 }}>
                   <Button
                     type="submit"
                     variant="contained"
                     fullWidth
                     disableElevation
-                    disabled={loading}
+                    disabled={loading || Object.values(formik.errors).some((error: any) => error)}
                   >
-                    {t('pages.login.signIn')}
+                    {t('pages.reset-password.reset')}
+                  </Button>
+                </Grid2>
+                <Grid2 size={{ xl: 12, lg: 12, md: 12, sm: 12, xs: 12 }}>
+                  <Button href={`${lang}/login`} fullWidth disableElevation disabled={loading}>
+                    {t('pages.reset-password.back-to-login')}
                   </Button>
                 </Grid2>
               </Grid2>

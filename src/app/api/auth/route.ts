@@ -30,30 +30,43 @@ export async function POST(req: NextRequest) {
 
           return NextResponse.json(data.data);
         } catch (err: any) {
-          return NextResponse.json(err?.response?.data|| err.message);
+          return NextResponse.json(err?.response?.data || err.message);
         }
       }
       case 'createUser': {
-        const data = await authService.createUser({
-          email: body.email,
-          password: body.password,
-        });
-        return NextResponse.json({ message: 'User has been created', data, status: 201 });
+        try {
+          const data = await authService.createUser({
+            email: body.email,
+            password: body.password,
+          });
+          return NextResponse.json(data.data);
+        } catch (err: any) {
+          return NextResponse.json(err?.response?.data || err.message);
+        }
       }
       case 'confirmUser': {
-        const data = await authService.confirmUser({
-          email: body.email,
-          password: body.password,
-        });
-        return NextResponse.json({ message: 'User has been confirmed', data, status: 200 });
+        try {
+          const data = await authService.confirmUser({
+            email: body.email,
+            password: body.password,
+            confirmationCode: body.confirmationCode,
+          });
+          return NextResponse.json(data.data);
+        } catch (err: any) {
+          return NextResponse.json(err?.response?.data || err.message);
+        }
       }
       case 'resetPassword': {
-        const data = await authService.resetPassword({
-          email: body.email,
-          password: body.password,
-          newPassword: body.newPassword,
-        });
-        return NextResponse.json({ message: 'Password has been reset', data, status: 200 });
+        try {
+          const data = await authService.resetPassword({
+            email: body.email,
+            oldPassword: body.oldPassword,
+            newPassword: body.newPassword,
+          });
+          return NextResponse.json(data.data);
+        } catch (err: any) {
+          return NextResponse.json(err?.response?.data || err.message);
+        }
       }
       default: {
         return NextResponse.json({ error: 'Action not found' }, { status: 404 });

@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 
 const supportedLocales = ['us', 'br'];
 const defaultLocale = '/us';
+const publicPages = ['login', 'create-user', 'reset-password', 'confirm-user'];
 
 export function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;
@@ -14,9 +15,13 @@ export function middleware(req: NextRequest) {
 
   const token = req.cookies.get('token');
   const actualLanguage = pathname.split('/')[1];
+
   if (token) {
     return NextResponse.next();
   } else if (!token && !pathname.includes('/login')) {
+    if (publicPages.some((page) => pathname.includes(page))) {
+      return NextResponse.next();
+    }
     return NextResponse.redirect(new URL(`${actualLanguage}/login`, req.url));
   }
 }
