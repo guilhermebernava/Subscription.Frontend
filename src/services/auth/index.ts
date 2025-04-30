@@ -1,11 +1,10 @@
-import { api } from '@/services';
+import { authApi } from '@/services';
 import { IAuth } from './interface';
-import { apiConfig } from '@/configs';
 
 export class AuthService {
   async login(data: IAuth) {
     try {
-      const response = await api.post('login', data);
+      const response = await authApi.post('login', data);
       return {
         success: true,
         data: response.data,
@@ -22,7 +21,7 @@ export class AuthService {
   
   async createUser(data: IAuth) {
     try {
-      const response = await api.post('createUser', data);
+      const response = await authApi.post('createUser', data);
       return {
         success: true,
         data: response.data,
@@ -39,7 +38,7 @@ export class AuthService {
   
   async confirmUser(data: IAuth) {
     try {
-      const response = await api.post('confirmSignUp', data);
+      const response = await authApi.post('confirmSignUp', data);
       return {
         success: true,
         data: response.data,
@@ -56,7 +55,7 @@ export class AuthService {
   
   async resetPassword(data: IAuth) {
     try {
-      const response = await api.post('resetPassword', data);
+      const response = await authApi.post('resetPassword', data);
       return {
         success: true,
         data: response.data,
@@ -73,7 +72,7 @@ export class AuthService {
   
   async test() {
     try {
-      const response = await api.get('test');
+      const response = await authApi.get('test');
       return {
         success: true,
         data: response.data,

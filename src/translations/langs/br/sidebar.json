@@ -1,6 +1,7 @@
 {
   "home": "Painel",
-  "page-1": "Página 1",
+  "subscriptions": "Assinaturas",
+  "templates": "Modelos",
   "profile": "Perfil",
   "profile-menu": {
     "logout": "Sair"

@@ -1,0 +1,17 @@
+{
+  "title": "Assinaturas",
+  "description": "Descrição.",
+  "new-subscription": "Novo",
+  "table": {
+    "name": "Nome",
+    "created-by": "Criado por",
+    "actions": "Ações"
+  },
+  "form": {
+    "title": "Nova assinatura",
+    "submit": "Criar",
+    "custom-template": {
+      "label": "Modelo costumizado"
+    }
+  }
+}

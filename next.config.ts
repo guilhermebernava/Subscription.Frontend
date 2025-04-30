@@ -4,6 +4,7 @@ const nextConfig: NextConfig = {
   /* config options here */
   env: {
     API_URL: process.env.API_URL,
+    SUBSCRIPTION_API_URL: process.env.SUBSCRIPTION_API_URL,
     AMBIENT: process.env.AMBIENT,
   },
 };

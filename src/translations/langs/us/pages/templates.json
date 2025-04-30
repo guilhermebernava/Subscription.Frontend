@@ -1,0 +1,25 @@
+{
+  "title": "Templates",
+  "description": "Description.",
+  "new-template": "New",
+  "preview": "Preview",
+  "table": {
+    "id": "ID",
+    "created-by": "Created by",
+    "actions": "Actions"
+  },
+  "form": {
+    "title": "New template",
+    "submit": "Create",
+    "email": {
+      "label": "Email"
+    },
+    "custom-template": {
+      "label": "Custom Template"
+    },
+    "subscriptions-type": {
+      "option1": 0,
+      "option2": 1
+    }
+  }
+}

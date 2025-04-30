@@ -1,4 +1,4 @@
-import { LooksOne } from '@mui/icons-material';
+import { Code, Group, LooksOne } from '@mui/icons-material';
 import { OverridableStringUnion } from '@mui/types';
 import { SvgIconPropsColorOverrides, SvgIconTypeMap } from '@mui/material';
 import { OverridableComponent } from '@mui/material/OverridableComponent';
@@ -29,8 +29,13 @@ export interface ISubRoute extends Omit<IRoutes, 'icon' | 'subRoutes'> {
 
 export const routes: IRoutes[] = [
   {
-    path: '/page-1',
-    text: 'page-1',
-    icon: LooksOne,
+    path: '/subscriptions',
+    text: 'subscriptions',
+    icon: Group,
+  },
+  {
+    path: '/templates',
+    text: 'templates',
+    icon: Code,
   },
 ];
