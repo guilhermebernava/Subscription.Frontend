@@ -16,13 +16,14 @@ import { Close } from '@mui/icons-material';
 
 interface FormProps {
   onClose: () => void;
+  handleGetTemplates: () => void;
   user: {
     id: string;
     email: string;
   };
 }
 
-const Form: FC<FormProps> = ({ user, onClose }) => {
+const CreateTemplate: FC<FormProps> = ({ user, onClose, handleGetTemplates }) => {
   const { t, i18n } = useTranslation();
 
   const [loading, setLoading] = React.useState(false);
@@ -39,6 +40,24 @@ const Form: FC<FormProps> = ({ user, onClose }) => {
     onSubmit: async (values) => {
       setLoading(true);
       try {
+        const response = await fetch(`/api/templates`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            ...values,
+            userId: user.id,
+          }),
+        });
+
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+
+        const data = await response.json();
+        handleGetTemplates();
+        onClose();
       } catch (err: any) {
       } finally {
         setLoading(false);
@@ -89,6 +108,10 @@ const Form: FC<FormProps> = ({ user, onClose }) => {
                     name="customTemplate"
                     onChange={formik.handleChange}
                     value={formik.values.customTemplate}
+                    style={{
+                      minHeight: 280,
+                      width: '100%',
+                    }}
                   />
                   {formik.touched.customTemplate && formik.errors.customTemplate ? (
                     <Box>{formik.errors.customTemplate}</Box>
@@ -135,4 +158,4 @@ const Form: FC<FormProps> = ({ user, onClose }) => {
   );
 };
 
-export default Form;
+export default CreateTemplate;

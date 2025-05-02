@@ -3,6 +3,8 @@
   "description": "Description.",
   "new-template": "New",
   "preview": "Preview",
+  "delete": "Delete",
+  "cancel": "Cancel",
   "table": {
     "id": "ID",
     "created-by": "Created by",
@@ -10,16 +12,14 @@
   },
   "form": {
     "title": "New template",
+    "edit-title": "Edit template",
     "submit": "Create",
+    "submit-edit": "Edit",
     "email": {
       "label": "Email"
     },
     "custom-template": {
-      "label": "Custom Template"
-    },
-    "subscriptions-type": {
-      "option1": 0,
-      "option2": 1
+      "label": "Custom template"
     }
   }
 }

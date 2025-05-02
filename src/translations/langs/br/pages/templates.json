@@ -3,19 +3,23 @@
   "description": "Descrição.",
   "new-template": "Novo",
   "preview": "Pré-visualização",
+  "delete": "Apagar",
+  "cancel": "Cancelar",
   "table": {
     "id": "ID",
     "created-by": "Criado por",
     "actions": "Ações"
   },
   "form": {
-    "title": "Nova assinatura",
+    "title": "Novo modelo",
+    "edit-title": "Editar modelo",
     "submit": "Criar",
+    "submit-edit": "Editar",
     "email": {
       "label": "Email"
     },
     "custom-template": {
-      "label": "Modelo Costumizado"
+      "label": "Modelo costumizado"
     }
   }
 }

@@ -17,8 +17,9 @@ import {
 } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import Form from './form';
+import CreateTemplate from './create';
 import { ITemplate } from '@/services/template/interface';
+import EditTemplate from './edit';
 
 export default function Templates() {
   const { t } = useTranslation();
@@ -27,8 +28,10 @@ export default function Templates() {
   const [templates, setTemplates] = useState<ITemplate[]>([]);
   const [selectedTemplate, setSelectedTemplate] = useState<ITemplate | null>(null);
 
-  const [open, setOpen] = useState(false);
+  const [create, setCreate] = useState(false);
+  const [edit, setEdit] = useState(false);
   const [see, setSee] = useState(false);
+  const [deleteTemplate, setDeleteTemplate] = useState(false);
 
   const handleGetTemplates = async () => {
     setLoading(true);
@@ -46,6 +49,26 @@ export default function Templates() {
       setTemplates(data);
     } catch (error) {
       console.error('Error fetching templates:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleDeleteTemplate = async (id: string) => {
+    setLoading(true);
+    try {
+      const response = await fetch(`/api/templates/${id}`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      handleGetTemplates();
+    } catch (error) {
+      console.error('Error deleting template:', error);
     } finally {
       setLoading(false);
     }
@@ -69,7 +92,7 @@ export default function Templates() {
       >
         <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
           <Box />
-          <Button onClick={() => setOpen(true)} endIcon={<Add />} variant="outlined">
+          <Button onClick={() => setCreate(true)} endIcon={<Add />} variant="outlined">
             {t('pages.templates.new-template')}
           </Button>
         </Box>
@@ -107,13 +130,23 @@ export default function Templates() {
                         setSee(true);
                       }}
                     >
-                      <Visibility />
+                      <Visibility color="success" />
                     </IconButton>
-                    <IconButton onClick={() => {}}>
-                      <Edit />
+                    <IconButton
+                      onClick={() => {
+                        setSelectedTemplate(template);
+                        setEdit(true);
+                      }}
+                    >
+                      <Edit color="info" />
                     </IconButton>
-                    <IconButton onClick={() => {}}>
-                      <Delete />
+                    <IconButton
+                      onClick={() => {
+                        setSelectedTemplate(template);
+                        setDeleteTemplate(true);
+                      }}
+                    >
+                      <Delete color="error" />
                     </IconButton>
                   </TableCell>
                 </TableRow>
@@ -123,8 +156,8 @@ export default function Templates() {
         </TableContainer>
       </Card>
       <Modal
-        open={open}
-        onClose={() => setOpen(false)}
+        open={create}
+        onClose={() => setCreate(false)}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
@@ -137,11 +170,44 @@ export default function Templates() {
             width: '100%',
           }}
         >
-          <Form
-            onClose={() => setOpen(false)}
+          <CreateTemplate
+            handleGetTemplates={handleGetTemplates}
+            onClose={() => setCreate(false)}
             user={{
-              id: '123',
-              email: '',
+              id: '1234',
+              email: 'teste@email.com',
+            }}
+          />
+        </Box>
+      </Modal>
+      <Modal
+        open={edit}
+        onClose={() => {
+          setEdit(false);
+          setSelectedTemplate(null);
+        }}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box
+          sx={{
+            justifyContent: 'center',
+            alignItems: 'center',
+            height: '100vh',
+            display: 'flex',
+            width: '100%',
+          }}
+        >
+          <EditTemplate
+            template={selectedTemplate}
+            handleGetTemplates={handleGetTemplates}
+            onClose={() => {
+              setEdit(false);
+              setSelectedTemplate(null);
+            }}
+            user={{
+              id: '1234',
+              email: 'teste@email.com',
             }}
           />
         </Box>
@@ -180,6 +246,69 @@ export default function Templates() {
                 dangerouslySetInnerHTML={{ __html: selectedTemplate?.templateHtml || '' }}
               />
             </Card>
+          </Card>
+        </Box>
+      </Modal>
+      <Modal
+        open={deleteTemplate}
+        onClose={() => {
+          setDeleteTemplate(false);
+          setSelectedTemplate(null);
+        }}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box
+          sx={{
+            justifyContent: 'center',
+            alignItems: 'center',
+            height: '100vh',
+            display: 'flex',
+            width: '100%',
+          }}
+        >
+          <Card
+            sx={{
+              width: '100%',
+              maxWidth: 480,
+              p: 2,
+            }}
+          >
+            <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
+              {t('pages.templates.delete')}
+              <IconButton
+                onClick={() => {
+                  setDeleteTemplate(false);
+                  setSelectedTemplate(null);
+                }}
+              >
+                <Close />
+              </IconButton>
+            </Box>
+            <Box display="flex" justifyContent="space-between" alignItems="center" gap={2}>
+              <Button
+                fullWidth
+                variant="outlined"
+                onClick={() => {
+                  setSelectedTemplate(null);
+                  setDeleteTemplate(false);
+                }}
+              >
+                {t('pages.templates.cancel')}
+              </Button>
+              <Button
+                fullWidth
+                variant="contained"
+                color="error"
+                onClick={() => {
+                  handleDeleteTemplate(selectedTemplate?.id || '');
+                  setDeleteTemplate(false);
+                  setSelectedTemplate(null);
+                }}
+              >
+                {t('pages.templates.delete')}
+              </Button>
+            </Box>
           </Card>
         </Box>
       </Modal>
