@@ -19,6 +19,7 @@ export async function PUT(req: NextRequest) {
 export async function POST(req: NextRequest) {
   const token = req.cookies.get('token');
   const body = await req.json();
+
   const data = await templateService.createTemplate(body, token?.value);
   return NextResponse.json({ success: data.success, data: data.data }, { status: data.status });
 }

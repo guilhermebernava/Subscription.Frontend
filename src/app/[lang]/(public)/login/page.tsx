@@ -53,7 +53,8 @@ export default function Login() {
 
         const data = await res.json();
         if (res.ok) {
-          document.cookie = `token=${data.token}; user=${data.userId}; path=/; max-age=3600;`;
+          document.cookie = `token=${data.token}; path=/; max-age=3600;`;
+          document.cookie = `user=${data.userId}; path=/; max-age=3600;`;
           push(`${lang}/`);
         } else {
           throw new Error(data.message || 'error.unknown');

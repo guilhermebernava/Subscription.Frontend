@@ -1,5 +1,6 @@
 'use client';
 import { Add, Close, Delete, Edit, Visibility } from '@mui/icons-material';
+import Cookies from 'js-cookie';
 import {
   Box,
   Button,
@@ -23,6 +24,7 @@ import EditTemplate from './edit';
 
 export default function Templates() {
   const { t } = useTranslation();
+  const userId = Cookies.get('user');
 
   const [loading, setLoading] = useState(false);
   const [templates, setTemplates] = useState<ITemplate[]>([]);
@@ -174,7 +176,7 @@ export default function Templates() {
             handleGetTemplates={handleGetTemplates}
             onClose={() => setCreate(false)}
             user={{
-              id: '1234',
+              id: userId || '',
               email: 'teste@email.com',
             }}
           />
@@ -206,7 +208,7 @@ export default function Templates() {
               setSelectedTemplate(null);
             }}
             user={{
-              id: '1234',
+              id: userId || '',
               email: 'teste@email.com',
             }}
           />
