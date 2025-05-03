@@ -16,14 +16,14 @@ export function middleware(req: NextRequest) {
   const token = req.cookies.get('token');
   const actualLanguage = pathname.split('/')[1];
 
-  // if (token) {
+  if (token) {
     return NextResponse.next();
-  // } else if (!token && !pathname.includes('/login')) {
-  //   if (publicPages.some((page) => pathname.includes(page))) {
-  //     return NextResponse.next();
-  //   }
-  //   return NextResponse.redirect(new URL(`${actualLanguage}/login`, req.url));
-  // }
+  } else if (!token && !pathname.includes('/login')) {
+    if (publicPages.some((page) => pathname.includes(page))) {
+      return NextResponse.next();
+    }
+    return NextResponse.redirect(new URL(`${actualLanguage}/login`, req.url));
+  }
 }
 
 export const config = {
