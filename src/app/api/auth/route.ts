@@ -28,7 +28,14 @@ export async function POST(req: NextRequest) {
             password: body.password,
           });
 
+<<<<<<< HEAD
           return NextResponse.json({ success: data.success, ...data.data }, { status: data.status });
+=======
+          return NextResponse.json(
+            { success: data.success, ...data.data },
+            { status: data.status },
+          );
+>>>>>>> 2b79e88 (finalizando projeto)
         } catch (err: any) {
           return NextResponse.json({ success: false, error: err?.response?.data || err.message });
         }
@@ -39,7 +46,14 @@ export async function POST(req: NextRequest) {
             email: body.email,
             password: body.password,
           });
+<<<<<<< HEAD
           return NextResponse.json({ success: data.success, ...data.data }, { status: data.status });
+=======
+          return NextResponse.json(
+            { success: data.success, ...data.data },
+            { status: data.status },
+          );
+>>>>>>> 2b79e88 (finalizando projeto)
         } catch (err: any) {
           return NextResponse.json({ success: false, error: err?.response?.data || err.message });
         }
@@ -64,7 +78,14 @@ export async function POST(req: NextRequest) {
             oldPassword: body.oldPassword,
             newPassword: body.newPassword,
           });
+<<<<<<< HEAD
           return NextResponse.json({ success: data.success, ...data.data }, { status: data.status });
+=======
+          return NextResponse.json(
+            { success: data.success, ...data.data },
+            { status: data.status },
+          );
+>>>>>>> 2b79e88 (finalizando projeto)
         } catch (err: any) {
           return NextResponse.json({ success: false, error: err?.response?.data || err.message });
         }

@@ -7,5 +7,5 @@ export const br = {
   sidebar,
   pages,
   theme,
-  error
+  error,
 };

@@ -1,0 +1,35 @@
+{
+  "title": "Subscriptions",
+  "description": "Description.",
+  "new-subscription": "New",
+  "preview": "Preview",
+  "table": {
+    "id": "ID",
+    "name": "Name",
+    "created-by": "Created by",
+    "actions": "Actions",
+    "lastSended": "Last sended",
+    "subscriptionType": "Subscription type"
+  },
+  "form": {
+    "subscription-type": {
+      "Immediately": "Immediately",
+      "Daily": "Daily",
+      "Weekly": "Weekly",
+      "Monthly": "Monthlye"
+    },
+    "title": "New subscription",
+    "submit": "Create",
+    "edit": "Edit",
+    "email": {
+      "label": "Email"
+    },
+    "custom-template": {
+      "label": "Custom Template"
+    },
+    "subscriptions-type": {
+      "option1": 0,
+      "option2": 1
+    }
+  }
+}

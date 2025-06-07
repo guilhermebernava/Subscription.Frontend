@@ -3,15 +3,23 @@ import axios from 'axios';
 import https from 'https';
 
 const httpsAgent = new https.Agent({
-  rejectUnauthorized: apiConfig.ambient === 'DEV' ? false : true,
+  rejectUnauthorized: apiConfig.ambient !== 'DEV',
 });
 
-const api = axios.create({
-  baseURL: apiConfig.apiUrl,
+const authApi = axios.create({
+  baseURL: apiConfig.authApiUrl,
   httpsAgent,
   headers: {
     'Content-Type': 'application/json',
   },
 });
 
-export { api, httpsAgent };
+const subscriptionsApi = axios.create({
+  baseURL: apiConfig.subscriptionsApiUrl,
+  httpsAgent,
+  headers: {
+    'Content-Type': 'application/json',
+  },
+});
+
+export { authApi, subscriptionsApi, httpsAgent };

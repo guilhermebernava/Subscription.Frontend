@@ -7,5 +7,5 @@ export const us = {
   sidebar,
   pages,
   theme,
-  error
+  error,
 };

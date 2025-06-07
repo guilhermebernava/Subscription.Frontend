@@ -1,4 +1,5 @@
 export const apiConfig = {
-  apiUrl: process.env.API_URL,
+  authApiUrl: process.env.API_URL,
+  subscriptionsApiUrl: process.env.SUBSCRIPTION_API_URL,
   ambient: process.env.AMBIENT,
 };

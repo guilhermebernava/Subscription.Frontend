@@ -1,10 +1,33 @@
-import { authApi } from '@/services';
-import { IAuth } from './interface';
+import { subscriptionsApi } from '@/services';
 
-export class AuthService {
-  async login(data: IAuth) {
+export class TemplateService {
+  async getTemplates(token?: string) {
     try {
-      const response = await authApi.post('login', data);
+      const response = await subscriptionsApi.get('template', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      return {
+        success: true,
+        data: response.data,
+        status: response.status,
+      };
+    } catch (error: any) {
+      return {
+        success: false,
+        data: error?.response?.data || error.message,
+        status: error?.response?.status || 400,
+      };
+    }
+  }
+  async getOneTemplates(id: string, token?: string) {
+    try {
+      const response = await subscriptionsApi.get(`template/byUserId/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       return {
         success: true,
         data: response.data,
@@ -19,9 +42,33 @@ export class AuthService {
     }
   }
 
-  async createUser(data: IAuth) {
+  async createTemplate(body: any, token?: string) {
     try {
-      const response = await authApi.post('createUser', data);
+      const response = await subscriptionsApi.post('template', body, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      return {
+        success: true,
+        data: response.data,
+        status: response.status,
+      };
+    } catch (error: any) {
+      return {
+        success: false,
+        data: error?.response?.data || error.message,
+        status: error?.response?.status || 400,
+      };
+    }
+  }
+  async updateTemplate(id: string, body: any, token?: string) {
+    try {
+      const response = await subscriptionsApi.put('template', body, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       return {
         success: true,
         data: response.data,
@@ -36,43 +83,13 @@ export class AuthService {
     }
   }
 
-  async confirmUser(data: IAuth) {
+  async deleteTemplate(id: string, token?: string) {
     try {
-      const response = await authApi.post('confirmSignUp', data);
-      return {
-        success: true,
-        data: response.data,
-        status: response.status,
-      };
-    } catch (error: any) {
-      return {
-        success: false,
-        data: error?.response?.data || error.message,
-        status: error?.response?.status || 400,
-      };
-    }
-  }
-
-  async resetPassword(data: IAuth) {
-    try {
-      const response = await authApi.post('resetPassword', data);
-      return {
-        success: true,
-        data: response.data,
-        status: response.status,
-      };
-    } catch (error: any) {
-      return {
-        success: false,
-        data: error?.response?.data || error.message,
-        status: error?.response?.status || 400,
-      };
-    }
-  }
-
-  async test() {
-    try {
-      const response = await authApi.get('test');
+      const response = await subscriptionsApi.delete(`template/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       return {
         success: true,
         data: response.data,

@@ -1,0 +1,25 @@
+{
+  "title": "Templates",
+  "description": "Description.",
+  "new-template": "New",
+  "preview": "Preview",
+  "delete": "Delete",
+  "cancel": "Cancel",
+  "table": {
+    "id": "ID",
+    "created-by": "Created by",
+    "actions": "Actions"
+  },
+  "form": {
+    "title": "New template",
+    "edit-title": "Edit template",
+    "submit": "Create",
+    "submit-edit": "Edit",
+    "email": {
+      "label": "Email"
+    },
+    "custom-template": {
+      "label": "Custom template"
+    }
+  }
+}

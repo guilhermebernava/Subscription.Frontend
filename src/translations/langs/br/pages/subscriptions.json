@@ -1,0 +1,28 @@
+{
+  "title": "Assinaturas",
+  "preview": "Pré-visualização",
+  "description": "Descrição.",
+  "new-subscription": "Novo",
+  "table": {
+    "id": "ID",
+    "name": "Nome",
+    "created-by": "Criado por",
+    "actions": "Ações",
+    "lastSended": "Último envio",
+    "subscriptionType": "Tipo de assinatura"
+  },
+  "form": {
+    "subscription-type": {
+      "Immediately": "Imediatamente",
+      "Daily": "Diariamente",
+      "Weekly": "Semanalmente",
+      "Monthly": "Mensalmente"
+    },
+    "title": "Nova assinatura",
+    "submit": "Criar",
+    "edit": "Editar",
+    "custom-template": {
+      "label": "Modelo costumizado"
+    }
+  }
+}

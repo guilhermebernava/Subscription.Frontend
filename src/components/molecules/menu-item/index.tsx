@@ -79,7 +79,7 @@ const listItemSx = (
   my: 1,
   pb: hasSubRoutes && collapsed ? 0 : 1,
   ':hover': {
-    backgroundColor: '#0000002F'
+    backgroundColor: '#0000002F',
   },
   ...sx,
 });
