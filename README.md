@@ -1,4 +1,4 @@
-# React Base - Frontend do Microserviço de Subscriptions
+# Frontend do Microserviço de Subscriptions
 
 Este é o frontend do projeto de gerenciamento de subscriptions e disparo de emails, desenvolvido com **Next.js** e diversas tecnologias modernas para garantir uma experiência de usuário fluida, escalável e internacionalizada.
 
